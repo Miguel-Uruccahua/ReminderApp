@@ -44,8 +44,15 @@ class ReminderViewModel @Inject constructor(
     private val _data = MutableLiveData<String>()
     var data: LiveData<String> = _data
 
+    private val _dateTime = MutableLiveData<String>()
+    var dateTime: LiveData<String> = _dateTime
+
     fun onDataChange(id: String) {
         _data.value = id
+    }
+
+    fun onDateTimeChange(value: String) {
+        _dateTime.value = value
     }
 
     @RequiresApi(Build.VERSION_CODES.O)
@@ -54,11 +61,12 @@ class ReminderViewModel @Inject constructor(
             runCatching {
                 reminderRepository.add(ReminderModel(
                     content = _data.value ?: "Agregado sin datos",
-                    time = LocalDateTime.now().toString(),
+                    time = _dateTime.value ?: "No definido",
                     isDone = true
                 ))
             }.onSuccess {
                 _data.value = ""
+                _dateTime.value = "No definido"
             }.onFailure {
                 Log.e("ReminderVM","Fallo al insertar en: $it")
             }

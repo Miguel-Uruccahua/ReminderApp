@@ -40,15 +40,19 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Create
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.outlined.Done
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
@@ -70,6 +74,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.vanpra.composematerialdialogs.rememberMaterialDialogState
 
 
 @RequiresApi(Build.VERSION_CODES.O)
@@ -77,9 +82,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 fun ReminderScreen(
     navController: NavHostController, viewModel: ReminderViewModel = hiltViewModel()
 ) {
-    val scrollState = rememberLazyListState()
     val content by viewModel.data.observeAsState(initial = "")
+    val dateTime by viewModel.dateTime.observeAsState(initial = "No Definido")
+
     val uiState by viewModel.listState.collectAsStateWithLifecycle()
+    var showDateTime by remember { mutableStateOf(false) }
+    val dateDialogState = rememberMaterialDialogState()
+
+    if (showDateTime) {
+        DialogDateTimePicker3(onDismiss = { showDateTime = false }, onConfirm = {
+            viewModel.onDateTimeChange(it)
+        }, dialogState = dateDialogState)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally
@@ -90,7 +104,8 @@ fun ReminderScreen(
             modifier = Modifier.padding(start = 4.dp, end = 4.dp),
             fontWeight = FontWeight.Bold
         )
-        OutlinedTextField(value = content,
+        OutlinedTextField(
+            value = content,
             onValueChange = { viewModel.onDataChange(it) },
             modifier = Modifier.padding(start = 32.dp, end = 32.dp),
             label = { Text(text = "Contenido") },
@@ -100,10 +115,25 @@ fun ReminderScreen(
                 }
             },
         )
+        Text(text = "Fecha y Hora: $dateTime")
         Spacer(modifier = Modifier.size(8.dp))
-        Button(onClick = { viewModel.addReminder() }) {
-            Text(text = "Guardar")
+        Row() {
+            Button(onClick = { viewModel.addReminder() }) {
+                Text(text = "Guardar")
+                Spacer(modifier = Modifier.size(2.dp))
+                Icon(imageVector = Icons.Outlined.Done, contentDescription = null)
+            }
+            Spacer(modifier = Modifier.size(4.dp))
+            Button(onClick = {
+                dateDialogState.show()
+                showDateTime = true
+            }) {
+                Text(text = "Fecha y Hora")
+                Spacer(modifier = Modifier.size(2.dp))
+                Icon(imageVector = Icons.Filled.DateRange, contentDescription = null)
+            }
         }
+
         when (uiState) {
             is ReminderUiState.Error -> {}
             is ReminderUiState.Loading -> {
@@ -121,6 +151,7 @@ fun ReminderScreen(
 }
 
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AccessList(itemsAccess: List<ReminderModel>, viewModel: ReminderViewModel) {
     Text(
@@ -140,27 +171,33 @@ fun AccessList(itemsAccess: List<ReminderModel>, viewModel: ReminderViewModel) {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AccessItem(item: ReminderModel, viewModel: ReminderViewModel) {
     var isExpanded by remember { mutableStateOf(false) }
     val icon = if (!isExpanded) Icons.Default.ArrowDropDown else Icons.Default.KeyboardArrowUp
     var showDialogDelete by remember { mutableStateOf(false) }
     var showDialogUpdate by remember { mutableStateOf(false) }
+    var showDialogDateTime by remember { mutableStateOf(false) }
+
     if (showDialogDelete) {
         CustomDialogDelete(onConfirm = {
             viewModel.deleteReminder(item)
             showDialogDelete = false
-        },
-            onDismiss = { showDialogDelete = false })
+        }, onDismiss = { showDialogDelete = false })
     }
     if (showDialogUpdate) {
-        CustomDialogUpdate(
-            onConfirm = {
-                viewModel.updateReminder(it)
-                showDialogUpdate = false
-            },
-            onDismiss = { showDialogUpdate = false },
-            reminderModel = item
+        CustomDialogUpdate(onConfirm = {
+            viewModel.updateReminder(it)
+            showDialogUpdate = false
+        }, onDismiss = { showDialogUpdate = false }, reminderModel = item
+        )
+    }
+    if (showDialogDateTime) {
+        DialogDateTimePicker(onConfirm = {
+            viewModel.updateReminder(it)
+            showDialogDateTime = false
+        }, onDismiss = { showDialogDateTime = false }, reminderModel = item
         )
     }
     Box(
@@ -184,7 +221,7 @@ fun AccessItem(item: ReminderModel, viewModel: ReminderViewModel) {
                         .fillMaxWidth()
                 ) {
                     Text(text = item.content)
-                    Text(text = item.time)
+                    Text(text = "Fecha y Hora: " + item.time)
                 }
             }
             Spacer(modifier = Modifier.size(4.dp))
@@ -212,7 +249,7 @@ fun AccessItem(item: ReminderModel, viewModel: ReminderViewModel) {
                         )
                     }
                     Spacer(modifier = Modifier.size(5.dp))
-                    Button(onClick = { /*TODO*/ }) {
+                    Button(onClick = { showDialogDateTime = true }) {
                         Text(text = "Programar")
                         Spacer(modifier = Modifier.size(2.dp))
                         Icon(

@@ -119,6 +119,9 @@ dependencies {
     //QRScan
     implementation(libs.zxing.android)
 
+    //DateTimePicker
+    implementation(libs.io.github.vanpra.compose)
+
     // Compose
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
