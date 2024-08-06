@@ -9,5 +9,5 @@ data class ReminderEntity(
     val id :Int = 0,
     val content: String = "",
     val time: String = "",
-    val isDone: Boolean = false
+    var isDone: Boolean = false
 )

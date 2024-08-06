@@ -26,6 +26,8 @@ import androidx.lifecycle.viewModelScope
 import com.applicationtls.tools.data.repository.ReminderRepository
 import com.applicationtls.tools.ui.reminder.domain.ReminderModel
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.catch
@@ -41,6 +43,10 @@ import javax.inject.Inject
 class ReminderViewModel @Inject constructor(
     private val reminderRepository: ReminderRepository
 ) : ViewModel() {
+
+    init {
+        checkNotifications()
+    }
     private val _data = MutableLiveData<String>()
     var data: LiveData<String> = _data
 
@@ -62,13 +68,22 @@ class ReminderViewModel @Inject constructor(
                 reminderRepository.add(ReminderModel(
                     content = _data.value ?: "Agregado sin datos",
                     time = _dateTime.value ?: "No definido",
-                    isDone = true
+                    isDone = false
                 ))
             }.onSuccess {
                 _data.value = ""
                 _dateTime.value = "No definido"
             }.onFailure {
                 Log.e("ReminderVM","Fallo al insertar en: $it")
+            }
+        }
+    }
+
+    private fun checkNotifications(){
+        viewModelScope.launch(Dispatchers.IO) {
+            repeat(Int.MAX_VALUE){
+                delay(5000)
+                reminderRepository.startNotification()
             }
         }
     }

@@ -1,6 +1,7 @@
 package com.applicationtls.tools.ui.reminder
 
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -51,7 +52,7 @@ fun DialogDateTimePicker(
     reminderModel: ReminderModel
 ) {
     var pickedDate by remember { mutableStateOf(LocalDate.now()) }
-    var pickedTime by remember { mutableStateOf(LocalTime.NOON) }
+    var pickedTime by remember { mutableStateOf(LocalTime.MAX) }
     val formattedDate by remember {
         derivedStateOf {
             ofPattern("dd-MM-yyyy")
@@ -60,7 +61,7 @@ fun DialogDateTimePicker(
     }
     val formattedTime by remember {
         derivedStateOf {
-            ofPattern("hh:mm")
+            ofPattern("HH:mm")
                 .format(pickedTime)
         }
     }
@@ -131,9 +132,11 @@ fun DialogDateTimePicker(
                     }
                 ) {
                     timepicker(
-                        initialTime = LocalTime.NOON,
+                        initialTime = LocalTime.MAX,
                         title = "Pick a time",
+                        is24HourClock = true,
                     ) {
+                        Log.e("SELECTED", it.toString())
                         pickedTime = it
                     }
                 }
@@ -202,7 +205,7 @@ fun DialogDateTimePicker3(
     dialogState: MaterialDialogState
 ) {
     var pickedDate by remember { mutableStateOf(LocalDate.now()) }
-    var pickedTime by remember { mutableStateOf(LocalTime.NOON) }
+    var pickedTime by remember { mutableStateOf(LocalTime.MAX) }
     val formattedDate by remember {
         derivedStateOf {
             ofPattern("dd-MM-yyyy")
@@ -211,7 +214,7 @@ fun DialogDateTimePicker3(
     }
     val formattedTime by remember {
         derivedStateOf {
-            ofPattern("hh:mm")
+            ofPattern("HH:mm")
                 .format(pickedTime)
         }
     }
@@ -250,10 +253,12 @@ fun DialogDateTimePicker3(
         }
     ) {
         timepicker(
-            initialTime = LocalTime.NOON,
+            initialTime = LocalTime.MAX,
             title = "Pick a time",
+            is24HourClock = true,
         ) {
             pickedTime = it
+            Log.e("SELECTED", pickedTime.toString())
         }
     }
 }

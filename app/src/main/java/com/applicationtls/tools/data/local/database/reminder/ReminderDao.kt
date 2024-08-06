@@ -22,4 +22,7 @@ interface ReminderDao {
     @Query("SELECT * FROM reminderentity ORDER BY id desc ")
     fun getData(): Flow<List<ReminderEntity>>
 
+    @Query("SELECT * FROM reminderentity where time = :date and isDone = 0")
+    fun selectDataByDate(date:String): List<ReminderEntity>
+
 }

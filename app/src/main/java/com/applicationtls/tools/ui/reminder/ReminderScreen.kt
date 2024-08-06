@@ -174,6 +174,7 @@ fun AccessList(itemsAccess: List<ReminderModel>, viewModel: ReminderViewModel) {
 @RequiresApi(Build.VERSION_CODES.O)
 @Composable
 fun AccessItem(item: ReminderModel, viewModel: ReminderViewModel) {
+
     var isExpanded by remember { mutableStateOf(false) }
     val icon = if (!isExpanded) Icons.Default.ArrowDropDown else Icons.Default.KeyboardArrowUp
     var showDialogDelete by remember { mutableStateOf(false) }

@@ -16,6 +16,9 @@
 
 package com.applicationtls.tools.ui
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -26,6 +29,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import com.applicationtls.tools.utils.CHANEL_ID
 import com.applicationtls.tools.ui.navigation.MainNavigation
 import com.applicationtls.tools.ui.navigation.TopBar
 import dagger.hilt.android.AndroidEntryPoint
@@ -33,10 +37,14 @@ import com.applicationtls.tools.ui.theme.MyApplicationTheme
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    companion object {
+        const val MY_CHANNEL_ID = "myChannel"
+    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createChannel()
         setContent {
             MyApplicationTheme {
                 Surface(
@@ -51,6 +59,21 @@ class MainActivity : ComponentActivity() {
 
     override fun onBackPressed() {
         Log.e("MainActivity","back press")
+    }
+
+    fun createChannel(){
+        if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
+            val channel = NotificationChannel(
+                CHANEL_ID,
+                "MyChanelNotify",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Reminder:"
+            }
+            val notificationManager:NotificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+            notificationManager.createNotificationChannel(channel)
+        }
     }
 
 }
