@@ -31,7 +31,7 @@ fun MainNavigation(navController:NavHostController) {
 
     NavHost(navController = navController, startDestination = Reminder) {
         composable<QrScan> {
-            QrScanScreen(navController)
+            QrScanScreen()
         }
         composable<Reminder> {
             ReminderScreen(navController)

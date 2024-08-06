@@ -34,6 +34,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.time.LocalDateTime
 import java.util.Date
 
@@ -82,6 +83,7 @@ class ReminderViewModel @Inject constructor(
     private fun checkNotifications(){
         viewModelScope.launch(Dispatchers.IO) {
             repeat(Int.MAX_VALUE){
+                Log.e("0","here")
                 delay(5000)
                 reminderRepository.startNotification()
             }

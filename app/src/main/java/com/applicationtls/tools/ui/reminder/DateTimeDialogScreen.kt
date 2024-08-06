@@ -81,7 +81,7 @@ fun DialogDateTimePicker(
             shape = RoundedCornerShape(15.dp),
             modifier = Modifier
                 .fillMaxWidth(0.95f)
-                .border(2.dp, color = Color(0xFF163C5D), shape = RoundedCornerShape(15.dp))
+                .border(2.dp, color = Color(0xFF204C5A), shape = RoundedCornerShape(15.dp))
         ) {
             Column(
                 modifier = Modifier.padding(15.dp),

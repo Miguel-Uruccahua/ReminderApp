@@ -39,6 +39,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -72,6 +73,9 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.vanpra.composematerialdialogs.rememberMaterialDialogState
@@ -88,6 +92,7 @@ fun ReminderScreen(
     val uiState by viewModel.listState.collectAsStateWithLifecycle()
     var showDateTime by remember { mutableStateOf(false) }
     val dateDialogState = rememberMaterialDialogState()
+    val focusRequester = remember { FocusRequester() }
 
     if (showDateTime) {
         DialogDateTimePicker3(onDismiss = { showDateTime = false }, onConfirm = {
@@ -96,7 +101,7 @@ fun ReminderScreen(
     }
 
     Column(
-        modifier = Modifier.fillMaxSize(), Arrangement.Center, Alignment.CenterHorizontally
+        modifier = Modifier.fillMaxSize().background(Color(0xFFDFDBDB)), Arrangement.Center, Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.size(4.dp))
         Text(
@@ -107,14 +112,10 @@ fun ReminderScreen(
         OutlinedTextField(
             value = content,
             onValueChange = { viewModel.onDataChange(it) },
-            modifier = Modifier.padding(start = 32.dp, end = 32.dp),
             label = { Text(text = "Contenido") },
-            supportingText = {
-                if (content.isNullOrEmpty() || content.contains(" ")) {
-                    Text(text = "Ingrese el recordatorio")
-                }
-            },
-        )
+            keyboardOptions = KeyboardOptions(imeAction = ImeAction.None),
+            modifier = Modifier.padding(start = 32.dp, end = 32.dp, bottom = 10.dp).focusRequester(focusRequester),
+            )
         Text(text = "Fecha y Hora: $dateTime")
         Spacer(modifier = Modifier.size(8.dp))
         Row() {
@@ -155,8 +156,8 @@ fun ReminderScreen(
 @Composable
 fun AccessList(itemsAccess: List<ReminderModel>, viewModel: ReminderViewModel) {
     Text(
-        text = "Recordatorios",
-        modifier = Modifier.padding(start = 4.dp, end = 4.dp),
+        text = "Recordatorios: ",
+        modifier = Modifier.padding(start = 4.dp, end = 4.dp, top = 8.dp),
         fontWeight = FontWeight.Bold
     )
     val scrollState = rememberLazyListState()
@@ -204,9 +205,9 @@ fun AccessItem(item: ReminderModel, viewModel: ReminderViewModel) {
     Box(
         modifier = Modifier
             .clip(shape = MaterialTheme.shapes.small)
-            .background(Color(0xFFEEEDED))
+            .background(Color(0xFFD9F6FF))
             .border(
-                width = 2.dp, color = Color(0xFF163C5D)
+                width = 4.dp, color = Color(0xFF290569)
             )
             .padding(horizontal = 8.dp, vertical = 8.dp),
     ) {

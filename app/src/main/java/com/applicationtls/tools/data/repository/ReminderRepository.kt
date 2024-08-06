@@ -3,6 +3,7 @@ package com.applicationtls.tools.data.repository
 import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -59,6 +60,7 @@ class ReminderRepositoryImpl @Inject constructor(
     @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun startNotification(){
         var data = reminderDao.selectDataByDate(getNow())
+        Log.e("here",data.toString()+getNow())
         for (row in data){
             createNotification(row.content)
             reminderDao.updateRemind(row.apply { isDone=true })
