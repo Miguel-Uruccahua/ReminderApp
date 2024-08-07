@@ -6,7 +6,7 @@ Aplication with notification for datetime implements Arquitecture Template
 
 ## Demo
 
-  ![](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/ejemplo.gif)
+  ![](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/720.gif)
 
 
 ## Documentation
