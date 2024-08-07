@@ -29,4 +29,15 @@ Aplication with notification for datetime implements Arquitecture Template
 
 ## Screenshots
 
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/1.png)
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/2.png)
+
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/3.png)
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/4.png)
+
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/5.png)
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/6.png)
+
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/7.png)
+![App Screenshot](https://github.com/Miguel-Uruccahua/ReminderApp/blob/main/pictures/8.png)
+
