@@ -6,7 +6,7 @@ Aplication with notification for datetime implements Arquitecture Template
 
 ## Demo
 
-![Descripción del GIF](\pictures\ejemplo.gif)
+[Descripción del GIF](pictures\ejemplo.gif)
 
 
 ## Documentation
